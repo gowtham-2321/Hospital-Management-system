@@ -4,17 +4,20 @@ class person{
     protected:
         string name;
         int age;
+        string gender;
     public:
-        person(string n, int a) : name(n), age(a) {}
+        person(string n, int a, string g) : name(n), age(a), gender(g) {}
 
      void displayInfo() {
         cout << "Name: " << name << ", Age: " << age << endl;
-}
+    }
 };
 class Doctor :public person
 {
   private:
       string Specialization;
+      int Experience;
+
       public:
         Doctor(string n, int a, string s) : person(n, a), Specialization(s) {}
 
