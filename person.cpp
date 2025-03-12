@@ -8,7 +8,7 @@ class person{
         person(string n, int a) : name(n), age(a) {}
 
      void displayInfo() {
-        cout << "Name: " << name << ", Age: " << age << endl;
+        cout << "Name: " << name << ", Age: " << age <<"Gender"<<gender<< endl;
 }
 };
 class Doctor :public person
@@ -47,5 +47,19 @@ class Admin:public person
         person::displayInfo();
         cout << "Department: " << Department << endl;
         cout << "Admin_id: " << Admin_id << endl;
+    }
+};
+class staff :public person
+{
+  private:
+      string Department;
+      int Staff_id;
+      public:
+        staff(string n, int a, string d,int i) : person(n, a), Department(d) ,Staff_id(i){}
+
+    void displayInfo() {
+        person::displayInfo();
+        cout << "Department: " << Department << endl;
+        cout << "Staff_id: " << Staff_id << endl;
     }
 };
