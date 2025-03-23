@@ -140,7 +140,14 @@ void menu() {
             cout << "Enter appointment details (Date Time Purpose): ";
             cin >> date >> time >> purpose;
             appointments[appointmentCount++] = Appointment(doctors[0], patients[0], date, time, purpose);
-        } else if (choice == 7 && patientCount > 0 && prescriptionCount < MAX_PRESCRIPTIONS) {
+        }else if (choice == 4) {
+            for (int i = 0; i < doctorCount; i++) doctors[i].display();
+            pauseScreen();
+        }else if (choice == 5) {
+            for (int i = 0; i < patientCount; i++) patients[i].display();
+            pauseScreen();
+        }
+        else if (choice == 7 && patientCount > 0 && prescriptionCount < MAX_PRESCRIPTIONS) {
             string medicine, dosage, instructions;
             cout << "Enter prescription details (Medicine Dosage Instructions): ";
             cin >> medicine >> dosage >> instructions;
