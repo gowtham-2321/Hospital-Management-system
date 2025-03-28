@@ -25,7 +25,7 @@ public:
 };
 
 // Derived class - Doctor
-class Doctor : public Person {
+class Doctor : public Person {  
 public:
     string specialization;
     string qualification;
@@ -83,14 +83,11 @@ int doctorCount = 0, patientCount = 0, appointmentCount = 0;
 void clearScreen() {
     #ifdef _WIN32
         system("CLS");
-    #else
-        system("clear");
     #endif
 }
 
 void pauseScreen() {
     cout << "\nPress Enter to continue...";
-    cin.ignore();
     cin.get();
 }
 

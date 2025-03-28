@@ -1,10 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
 using namespace std;
 
 // Base class
-class Person {
+class Person { // creating a class
 public:
     string name;
     int age;
@@ -21,7 +20,7 @@ public:
 };
 
 // Doctor class
-class Doctor : public Person {
+class Doctor : public Person { //Inheritance
 public:
     string specialization;
     string qualification;
@@ -116,7 +115,6 @@ public:
 
 void pauseScreen() {
     cout << "\nPress Enter to continue...";
-    cin.ignore();
     cin.get();
 }
 
@@ -129,14 +127,13 @@ void menu() {
         cout << "==============================================\n";
         cout << "Enter your choice: ";
         cin >> choice;
-        cin.ignore();
 
         if (choice == 1) {
             string name, gender, contact, specialization, qualification;
             int age, experience;
             cout << "Enter doctor details (Name Age Gender Contact Specialization Qualification Experience): ";
             cin >> name >> age >> gender >> contact >> specialization >> qualification >> experience;
-            Doctor doc(name, age, gender, contact, specialization, qualification, experience);
+            Doctor doc(name, age, gender, contact, specialization, qualification, experience);  // creating object
             doc.saveToFile();
         } else if (choice == 2) {
             string name, gender, contact, disease, address;
