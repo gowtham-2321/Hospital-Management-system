@@ -1,4 +1,0 @@
-gowtham 30 male 8765445678 dental mbbs 10
-jeevan 23 male 8383883029 ortho mbbs 25
-jeevan 23 male 6372882738 ortho mbbs 34
-jeedhaa 24 male 6372882733 ortho mbbs 35

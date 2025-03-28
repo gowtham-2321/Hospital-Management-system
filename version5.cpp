@@ -1,120 +1,24 @@
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 using namespace std;
 
-// Base class
-class Person { // creating a class
-public:
-    string name;
-    int age;
-    string gender;
-    string contact;
 
-    Person() {}
-    Person(string n, int a, string g, string c) : name(n), age(a), gender(g), contact(c) {}
-    virtual void display() {
-        cout << "-------------------------------------\n";
-        cout << "Name: " << name << "\nAge: " << age << "\nGender: " << gender << "\nContact: " << contact << endl;
-        cout << "-------------------------------------\n";
-    }
-};
-
-// Doctor class
-class Doctor : public Person { //Inheritance
-public:
-    string specialization;
-    string qualification;
-    int experience, doctorID;
-
-    Doctor() {}
-    Doctor(int id, string n, int a, string g, string c, string spec, string qual, int exp) 
-        : Person(n, a, g, c), specialization(spec), qualification(qual), experience(exp), doctorID(id) {}
-    void display() override {
-        cout << "\n[Doctor Information]" << endl;
-        Person::display();
-        cout << "Specialization: " << specialization << "\nQualification: " << qualification 
-             << "\nExperience: " << experience << " years\n";
-    }
-    void saveToFile() {
-        ofstream file("doctors.txt", ios::app);
-        file << doctorID << ' ' << name << ' ' << age << ' ' << gender << ' ' << contact << ' ' 
-             << specialization << ' ' << qualification << ' ' << experience << '\n';
-        file.close();
-    }
-};
-
-// Patient class
-class Patient : public Person {
-public:
-    int patientID;
-    string disease;
-    string address;
-
-    Patient() {}
-    Patient(string n, int a, string g, string c, int id, string dis) 
-        : Person(n, a, g, c), patientID(id), disease(dis){}
-    void display() override {
-        cout << "\n[Patient Information]" << endl;
-        Person::display();
-        cout << "Patient ID: " << patientID << "\nDisease: " << disease <<"\n";
-    }
-    void saveToFile() {
-        ofstream file("patients.txt", ios::app);
-        file << name << ' ' << age << ' ' << gender << ' ' << contact << ' ' 
-             << patientID << ' ' << disease <<'\n';
-        file.close();
-    }
-};
-
-// Appointment class
-class Appointment {
-public:
-    int doctorID, patientID;
-    string date, time, purpose, patientName, doctorName;
-
-    Appointment() {}
-    Appointment(int d, int p, string dt, string tm, string purp) 
-        : doctorID(d), patientID(p), date(dt), time(tm), purpose(purp) {}
-    void display() {
-        cout << "\n[Appointment Details]" << endl;
-        cout << "Date: " << date << "\nTime: " << time << "\nPurpose: " << purpose 
-             << "\nDoctor: " << doctorName << "\nPatient: " << patientName << "\n";
-    }
-
-    void saveToFile() {
-        ofstream file("appointments.txt", ios::app);
-        patientName = findPatientName(patientID);
-        file << doctorName << ' ' << patientName << ' ' << date << ' ' << time << ' ' << purpose << '\n';
-        file.close();
-    }
-};
-
-// Prescription class
-class Prescription {
-public:
-    string patientName;
-    string medicine;
-    string dosage;
-    string instructions;
-
-    Prescription() {}
-    Prescription(string p, string med, string dose, string instr) 
-        : patientName(p), medicine(med), dosage(dose), instructions(instr) {}
-    void display() {
-        cout << "\n[Prescription Details]" << endl;
-        cout << "Patient: " << patientName << "\nMedicine: " << medicine << "\nDosage: " 
-             << dosage << "\nInstructions: " << instructions << "\n";
-    }
-    void saveToFile() {
-        ofstream file("prescriptions.txt", ios::app);
-        file << patientName << ' ' << medicine << ' ' << dosage << ' ' << instructions << '\n';
-        file.close();
-    }
-};
-
+//global functions
 void pauseScreen() {
-    cout << "\nPress Enter to continue...";
-    cin.get();
+    string con;
+    cout << "\nType continue to continue: ";
+    cin>> con;
+    if(con == "continue")
+    {
+        return;
+    }
+    else{
+        pauseScreen();
+    }
+}
+void clearScreen(){
+    system("cls");
 }
 
 int getNextPatientID() {
@@ -209,7 +113,7 @@ void deleteDoctor(int id) {
 
     while (file >> doctorID >> name >> age >> gender >> contact >> specialization >> qualification >> experience) {
         if (doctorID != id) {
-            temp << doctorID << name << ' ' << age << ' ' << gender << ' ' << contact << ' '
+            temp << doctorID << ' ' << name << ' ' << age << ' ' << gender << ' ' << contact << ' '
                  << specialization << ' ' << qualification << ' ' << experience << '\n';
         } else {
             found = true;
@@ -262,9 +166,122 @@ void deletePatient(int id) {
         remove("Temp.txt"); // Cleanup temp file if no deletion occurs
     }
 }
+
+// Base class
+class Person { // creating a class
+public:
+    string name;
+    int age;
+    string gender;
+    string contact;
+
+    Person() {}
+    Person(string n, int a, string g, string c) : name(n), age(a), gender(g), contact(c) {}
+    virtual void display() {
+        cout << "-------------------------------------\n";
+        cout << "Name: " << name << "\nAge: " << age << "\nGender: " << gender << "\nContact: " << contact << endl;
+        cout << "-------------------------------------\n";
+    }
+};
+
+// Doctor class
+class Doctor : public Person { //Inheritance
+public:
+    string specialization;
+    string qualification;
+    int experience, doctorID;
+
+    Doctor() {}
+    Doctor(int id, string n, int a, string g, string c, string spec, string qual, int exp) 
+        : Person(n, a, g, c), specialization(spec), qualification(qual), experience(exp), doctorID(id) {}
+    void display() override {
+        cout << "\n[Doctor Information]" << endl;
+        Person::display();
+        cout << "Specialization: " << specialization << "\nQualification: " << qualification 
+             << "\nExperience: " << experience << " years\n";
+    }
+    void saveToFile() {
+        ofstream file("doctors.txt", ios::app);
+        doctorID = getNextDoctorID();
+        file << doctorID << ' ' << name << ' ' << age << ' ' << gender << ' ' << contact << ' ' 
+             << specialization << ' ' << qualification << ' ' << experience << '\n';
+        file.close();
+    }
+};
+
+// Patient class
+class Patient : public Person {
+public:
+    int patientID;
+    string disease;
+    string address;
+
+    Patient() {}
+    Patient(string n, int a, string g, string c, int id, string dis) 
+        : Person(n, a, g, c), patientID(id), disease(dis){}
+    void display() override {
+        cout << "\n[Patient Information]" << endl;
+        Person::display();
+        cout << "Patient ID: " << patientID << "\nDisease: " << disease <<"\n";
+    }
+    void saveToFile() {
+        ofstream file("patients.txt", ios::app);
+        file << name << ' ' << age << ' ' << gender << ' ' << contact << ' ' 
+             << patientID << ' ' << disease <<'\n';
+        file.close();
+    }
+};
+
+// Appointment class
+class Appointment {
+public:
+    int doctorID, patientID;
+    string date, time, purpose, patientName, doctorName;
+
+    Appointment() {}
+    Appointment(int d, int p, string dt, string tm, string purp) 
+        : doctorID(d), patientID(p), date(dt), time(tm), purpose(purp) {}
+    void display() {
+        cout << "\n[Appointment Details]" << endl;
+        cout << "Date: " << date << "\nTime: " << time << "\nPurpose: " << purpose 
+             << "\nDoctor: " << doctorName << "\nPatient: " << patientName << "\n";
+    }
+
+    void saveToFile() {
+        ofstream file("appointments.txt", ios::app);
+        patientName = findPatientName(patientID);
+        file << doctorName << ' ' << patientName << ' ' << date << ' ' << time << ' ' << purpose << '\n';
+        file.close();
+    }
+};
+
+// Prescription class
+class Prescription {
+public:
+    string patientName;
+    string medicine;
+    string dosage;
+    string instructions;
+
+    Prescription() {}
+    Prescription(string p, string med, string dose, string instr) 
+        : patientName(p), medicine(med), dosage(dose), instructions(instr) {}
+    void display() {
+        cout << "\n[Prescription Details]" << endl;
+        cout << "Patient: " << patientName << "\nMedicine: " << medicine << "\nDosage: " 
+             << dosage << "\nInstructions: " << instructions << "\n";
+    }
+    void saveToFile() {
+        ofstream file("prescriptions.txt", ios::app);
+        file << patientName << ' ' << medicine << ' ' << dosage << ' ' << instructions << '\n';
+        file.close();
+    }
+};
+
 void menu() {
     int choice;
     do {
+        clearScreen();
         cout << "\n========= Hospital Management System =========\n";
         cout << "1. Add Doctor\n2. Add Patient\n3. Book Appointment\n4. View Doctors\n";
         cout << "5. View Patients\n6. View Appointments\n7. Create Prescription\n8. View Prescriptions\n9. Exit\n";
@@ -274,10 +291,11 @@ void menu() {
         cin >> choice;
 
         if (choice == 1) {
+            clearScreen();
             string name, gender, contact, specialization, qualification;
             int age, id, experience;
             cout << "===========================\n";
-            cout << "Enter Doctor Details:";
+            cout << "Enter Doctor Details:\n";
             cout << "===========================\n";
             cout << "Name of the Doctor: ";
             cin >> name;
@@ -296,12 +314,17 @@ void menu() {
             id = getNextDoctorID();
             Doctor doc(id, name, age, gender, contact, specialization, qualification, experience);  // creating object
             doc.saveToFile();
+            clearScreen();
+            cout << "========= Hospital Management System =========\n";
+            cout << "Doctor "<<name<<" has been added successfully!";
+            pauseScreen();
         }
         else if (choice == 2) {
+            clearScreen();
             string name, gender, contact, disease, address;
             int age, id;
             cout << "===========================\n";
-            cout << "Enter patient details";
+            cout << "Enter patient details\n";
             cout << "===========================\n";
             cout << "Name of the Patient: ";
             cin >> name;
@@ -316,8 +339,10 @@ void menu() {
             id = getNextPatientID();
             Patient pat(name, age, gender, contact, id, disease);
             pat.saveToFile();
+
         }
         else if (choice == 3) {
+            clearScreen();
             string date, time, purpose;
             int doctorID, patientID;
             cout << "=============================\n";
@@ -337,24 +362,28 @@ void menu() {
             app.saveToFile();
 
         } else if (choice == 4) {
+            clearScreen();
             ifstream file("doctors.txt");
             string line;
             while (getline(file, line)) cout << line << '\n';
             file.close();
             pauseScreen();
         } else if (choice == 5) {
+            clearScreen();
             ifstream file("patients.txt");
             string line;
             while (getline(file, line)) cout << line << '\n';
             file.close();
             pauseScreen();
         } else if (choice == 6) {
+            clearScreen();
             ifstream file("appointments.txt");
             string line;
             while (getline(file, line)) cout << line << '\n';
             file.close();
             pauseScreen();
         } else if (choice == 7) {
+            clearScreen();
             string patientName, medicine, dosage, instructions;
             cout << "Enter prescription details (Patient Medicine Dosage Instructions): ";
             cin >> patientName >> medicine >> dosage >> instructions;
@@ -362,6 +391,7 @@ void menu() {
             pres.saveToFile();
         }
         else if (choice == 8) {
+            clearScreen();
             ifstream file("prescriptions.txt");
             string line;
             while (getline(file, line)) cout << line << '\n';
@@ -369,18 +399,24 @@ void menu() {
             pauseScreen();
         }
         else if (choice == 10) {
-            int doctorID;
-            cout<< "Enter DoctorId: ";
-            cin>> doctorID;
-            deleteDoctor(doctorID);
-        }
-        else if (choice == 11) {
+            clearScreen();
             int patientID;
             cout<< "Enter PatientID: ";
             cin>> patientID;
             deletePatient(patientID);
+            pauseScreen();
+            
+        }
+        else if (choice == 11) {
+            clearScreen();
+            int doctorID;
+            cout<< "Enter DoctorId: ";
+            cin>> doctorID;
+            deleteDoctor(doctorID);
+            pauseScreen();
         }
     } while (choice != 9);
+    clearScreen();
 }
 
 int main() {
