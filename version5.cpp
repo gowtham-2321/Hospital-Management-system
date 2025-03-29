@@ -102,7 +102,7 @@ void deleteDoctor(int id) {
     ifstream file("Doctors.txt");
     ofstream temp("Temp.txt");
     
-    string name, specialization, qualification, gender, contact;
+    string name, specialization, qualification, gender, contact, foundDoc;
     int age, experience, doctorID;
     bool found = false;
 
@@ -117,6 +117,7 @@ void deleteDoctor(int id) {
                  << specialization << ' ' << qualification << ' ' << experience << '\n';
         } else {
             found = true;
+            foundDoc = name;
         }
     }
 
@@ -126,7 +127,7 @@ void deleteDoctor(int id) {
     if (found) {
         remove("Doctors.txt");
         rename("Temp.txt", "Doctors.txt");
-        cout << "Doctor " << name << " deleted successfully." << endl;
+        cout << "Doctor " << foundDoc << " deleted successfully." << endl;
     } else {
         cout << "Doctor not found!" << endl;
         remove("Temp.txt"); // Cleanup temp file if no deletion occurs
@@ -137,7 +138,7 @@ void deletePatient(int id) {
     ifstream file("Patients.txt");
     ofstream temp("Temp.txt");
     
-    string name, gender, disease, contact;
+    string name, gender, disease, contact, foundPat;
     int age, patientID;
     bool found = false;
 
@@ -151,6 +152,7 @@ void deletePatient(int id) {
             temp << name << ' ' << age << ' ' << gender << ' ' << contact << ' ' << patientID << ' ' << disease << '\n';
         } else {
             found = true;
+            foundPat = name;
         }
     }
 
@@ -160,11 +162,46 @@ void deletePatient(int id) {
     if (found) {
         remove("Patients.txt");
         rename("Temp.txt", "Patients.txt");
-        cout << "Patient " << name << " deleted successfully." << endl;
+        cout << "Patient " << foundPat << " deleted successfully." << endl;
     } else {
         cout << "Patient not found!" << endl;
         remove("Temp.txt"); // Cleanup temp file if no deletion occurs
     }
+}
+void displayDoctors(){
+    int doctorID, age,experience;
+    string name, gender, contact, specialization, qualification;
+    ifstream file("doctors.txt");
+    int i = 1;
+    while (file >> doctorID >> name >> age >> gender >> contact >> specialization >> qualification >> experience)
+    {
+        cout << "\n[Doctor Information - " << i << "]"<< endl;
+        cout << "-------------------------------------\n";
+        cout << "Name: " << name <<"\nDoctor ID: " << doctorID << "\nAge: " << age << "\nGender: " << gender << "\nContact: " << contact << endl;
+        cout << "Specialization: " << specialization << "\nQualification: " << qualification 
+             << "\nExperience: " << experience << " years\n";
+        cout << "-------------------------------------\n";
+        i++;
+    }
+    file.close();
+    pauseScreen();
+}
+
+void displayPatients(){
+    int patientID, age;
+    string name, gender, contact, disease;
+    ifstream file("patients.txt");
+    int i = 1;
+    while (file >> name >> age >> gender >> contact >> patientID >> disease){
+        cout << "\n[Patient Information - " << i << "]"<<endl;
+        cout << "-------------------------------------\n";
+        cout << "Name: " << name << "\nPatient ID: " << patientID << "\nAge: " << age << "\nGender: " << gender << "\nContact: " << contact << endl;
+        cout << "\nDisease: " << disease <<"\n";
+        cout << "-------------------------------------\n";
+        i++;
+    }
+    file.close();
+    pauseScreen();
 }
 
 // Base class
@@ -321,7 +358,7 @@ void menu() {
         }
         else if (choice == 2) {
             clearScreen();
-            string name, gender, contact, disease, address;
+            string name, gender, contact, disease;
             int age, id;
             cout << "===========================\n";
             cout << "Enter patient details\n";
@@ -361,28 +398,24 @@ void menu() {
             Appointment app(doctorID, patientID, date, time, purpose);
             app.saveToFile();
 
-        } else if (choice == 4) {
+        }
+        else if (choice == 4) {
             clearScreen();
-            ifstream file("doctors.txt");
-            string line;
-            while (getline(file, line)) cout << line << '\n';
-            file.close();
-            pauseScreen();
-        } else if (choice == 5) {
+            displayDoctors();
+        }
+        else if (choice == 5) {
             clearScreen();
-            ifstream file("patients.txt");
-            string line;
-            while (getline(file, line)) cout << line << '\n';
-            file.close();
-            pauseScreen();
-        } else if (choice == 6) {
+            displayPatients();
+        }
+        else if (choice == 6) {
             clearScreen();
             ifstream file("appointments.txt");
             string line;
             while (getline(file, line)) cout << line << '\n';
             file.close();
             pauseScreen();
-        } else if (choice == 7) {
+        }
+        else if (choice == 7) {
             clearScreen();
             string patientName, medicine, dosage, instructions;
             cout << "Enter prescription details (Patient Medicine Dosage Instructions): ";
