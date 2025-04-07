@@ -146,6 +146,8 @@ void deleteDoctor(int id) {
     if (found) {
         remove("doctors.txt");
         rename("Temp.txt", "doctors.txt");
+        Doctor doc;
+        doc.doctorCount--;
         cout << "Doctor " << foundDoc << " deleted successfully." << endl;
     } else {
         cout << "Doctor not found!" << endl;
@@ -240,8 +242,9 @@ public:
 };
 
 // Doctor class
-class Doctor : public Person { //Inheritance
+class Doctor : public Person { //Inheritance 
 public:
+    static int doctorCount;
     string specialization;
     string qualification;
     int experience, doctorID, i;
@@ -405,6 +408,7 @@ void getInputDoctor(){
     id = getNextDoctorID();
     Doctor* doc = new Doctor(id, name, age, gender, contact, specialization, qualification, experience);  // dynamically allocated object
     doc->saveToFile();
+    doc->doctorCount++;
     delete doc; // Free the allocated memory
     clearScreen();
     cout << "========= Hospital Management System =========\n";
