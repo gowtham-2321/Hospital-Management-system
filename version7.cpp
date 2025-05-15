@@ -489,7 +489,7 @@ void getInputAppointment(){
 }
 
 void getInputPrescription(){
-    int patientID, doctorID;
+    int patientID , doctorID;
     string medicine, dosage, instructions;
     cout << "=============================\n";
     cout << "Enter Prescription Details";
@@ -498,9 +498,9 @@ void getInputPrescription(){
     cin >> doctorID;
     cout << "Patient's id: ";
     cin >> patientID;
-    cout << "Medicine Prescribed: ";
+    cout << "Medicine Prescribed for the patient: ";
     cin >> medicine;
-    cout << "Dosage of the prescribed medicine: ";
+    cout << "Dosage of the prescribed medicine for the patient : ";
     cin >> dosage;
     cout << "Instructions: ";
     cin >> instructions;
